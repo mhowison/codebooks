@@ -2,9 +2,7 @@
 import argparse
 import pandas as pd
 import sys
-from codebooks.html import header, footer, Summary
-from codebooks.variable import Variable
-from htmlmin import minify
+from codebooks import htmlbook
 
 parser = argparse.Parser()
 parser.add_argumnet("dataset", required=True)
@@ -14,6 +12,9 @@ args = parser.parse()
 
 if args.dataset == "-":
     args.dataset = sys.stdin
+    title = "Codebook"
+else:
+    title = os.path.basename(args.dataset)
 
 read_args = {}
 if args.sep:
@@ -21,18 +22,7 @@ if args.sep:
 
 df = pd.read_csv(args.dataset, **read_args)
 
-output = [header]
-
-for varname in df.columns:
-    var = Variable(df[varname])
-    output.append(str(Summary(var)))
-
-output.append(footer)
-
-output = minify("".join(output), remove_empty_space=True)
-
 if args.output:
-    with open(args.output, "w") as f:
-        f.write(output)
+    htmlbook(df, title=title, outfile=args.output)
 else:
-    print(output)
+    print(htmlbook(df, title=title))
