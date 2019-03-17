@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+import argparse
+import pandas as pd
+import sys
+from codebooks.html import header, footer, Summary
+from codebooks.variable import Variable
+from htmlmin import minify
+
+parser = argparse.Parser()
+parser.add_argumnet("dataset", required=True)
+parser.add_argument("--sep", "-s")
+parser.add_argument("--output", "-o", default="-")
+args = parser.parse()
+
+if args.dataset == "-":
+    args.dataset = sys.stdin
+
+read_args = {}
+if args.sep:
+    read_args["sep"] = args.sep
+
+df = pd.read_csv(args.dataset, **read_args)
+
+output = [header]
+
+for varname in df.columns:
+    var = Variable(df[varname])
+    output.append(str(Summary(var)))
+
+output.append(footer)
+
+output = minify("".join(output), remove_empty_space=True)
+
+if args.output:
+    with open(args.output, "w") as f:
+        f.write(output)
+else:
+    print(output)
