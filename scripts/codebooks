@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 import argparse
+import os
 import pandas as pd
 import sys
 from codebooks import htmlbook
 
-parser = argparse.Parser()
-parser.add_argumnet("dataset", required=True)
+parser = argparse.ArgumentParser()
+parser.add_argument("dataset")
 parser.add_argument("--sep", "-s")
-parser.add_argument("--output", "-o", default="-")
-args = parser.parse()
+parser.add_argument("--output", "-o")
+args = parser.parse_args()
 
 if args.dataset == "-":
     args.dataset = sys.stdin
     title = "Codebook"
 else:
-    title = os.path.basename(args.dataset)
+    title = "Codebook for " + os.path.basename(args.dataset)
 
 read_args = {}
 if args.sep:
