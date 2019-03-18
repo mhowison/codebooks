@@ -43,9 +43,9 @@ class Summary(object):
         self.html = ["""
                      <hr/>
                      <div>
-                     <p class="lead">{}
+                     <h4>{}
                      <small><span class="label label-default">{}</span>&nbsp;{}</small>
-                     </p>
+                     </h4>
                      """.format(var.name, var.type.upper(), missing)]
 
         if var.type == "Unique Key":
@@ -53,7 +53,7 @@ class Summary(object):
         elif var.type == "Constant":
             self.html.append("<h4>Value: '{}'</h4>".format(var.counts.index[0]))
         elif var.type == "Indicator":
-            self.html.append("<h4>{:.1f}% {} / {:.1f}% {}</h4>".format(100.0 * var.counts.ix[0] / var.length,
+            self.html.append("<h5>{:.1f}% {} / {:.1f}% {}</h5>".format(100.0 * var.counts.ix[0] / var.length,
                                                                        var.counts.index[0],
                                                                        100.0 * var.counts.ix[1] / var.length,
                                                                        var.counts.index[1]))
@@ -61,6 +61,7 @@ class Summary(object):
             if var.distinct <= 10:
                 self.html.append("")
             elif var.distinct <= 100:
+                pass
         elif var.type == "Continuous":
             self.html.append("")
         else:
