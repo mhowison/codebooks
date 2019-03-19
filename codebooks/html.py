@@ -47,6 +47,9 @@ class Summary(object):
                      </h4>
                      """.format(var.name, var.type.upper(), missing)]
 
+        if var.desc:
+            self.html.append("<p>{}</p>".format(var.desc))
+
         if var.type == "Unique Key":
             pass
         elif var.type == "Constant":
@@ -111,7 +114,7 @@ class Summary(object):
                                                 var.counts.index[5-i],
                                                 var.counts.ix[5-i],
                                                 100.0 * var.counts.ix[5-i] / var.length,
-                                                var.distinct if i==0 else ""))
+                                                "{:,d}".format(var.distinct) if i==0 else ""))
                 self.html.append("</table>")
         elif var.type == "Continuous":
             plt.figure(figsize=(15.5, 2.5))

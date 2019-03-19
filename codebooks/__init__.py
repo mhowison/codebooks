@@ -8,12 +8,12 @@ from pkg_resources import get_distribution as _get_distribution
 
 __version__ = _get_distribution("codebooks").version
 
-def htmlbook(df, title="Codebook", outfile=None):
+def htmlbook(df, title="Codebook", outfile=None, desc={}):
 
     output = [html.header(title, len(df.columns), len(df))]
 
     for varname in df.columns:
-        var = Variable(df[varname])
+        var = Variable(df[varname], desc.get(varname, ""))
         output.append(str(html.Summary(var)))
 
     output.append(html.footer)

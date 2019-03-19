@@ -2,13 +2,14 @@ import pandas as pd
 
 class Variable(object):
 
-    def __init__(self, series):
+    def __init__(self, series, desc=""):
         """
         """
         if not isinstance(series, pd.Series):
             raise ValueError("variable must be a pandas series object")
 
         self.name = series.name
+        self.desc = desc
         self.length = len(series)
         self.missing = series.isnull()
         self.values = series[~self.missing].values
