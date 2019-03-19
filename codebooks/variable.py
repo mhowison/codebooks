@@ -11,6 +11,8 @@ class Variable(object):
         self.name = series.name
         self.length = len(series)
         self.missing = series.isnull()
+        self.values = series[~self.missing].values
+        self.values.sort()
 
         # Determine variable type
         if series.is_unique:
@@ -27,7 +29,7 @@ class Variable(object):
                 self.type = "Categorical"
             else:
                 self.type = "Continuous"
-                x = series.sort_values()
-                n = self.length
+                x = self.values
+                n = len(x)
                 self.range = (x[0], x[int(0.25*n)], x[int(0.5*n)], x[int(0.75*n)], x[n-1])
 
