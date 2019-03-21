@@ -10,15 +10,17 @@ class Variable(object):
 
         self.name = series.name
         self.desc = desc
-        self.length = len(series)
         self.missing = series.isnull()
-        self.values = series[~self.missing].values
+        self.length = len(series)
+
+        series = series[~self.missing]
+        self.values = series.values
         self.values.sort()
 
         # Determine variable type
         if series.is_unique:
             self.type = "Unique Key"
-            self.distinct = self.length - self.missing.sum()
+            self.distinct = len(series)
         else:
             self.counts = series.value_counts()
             self.distinct = len(self.counts)
