@@ -99,6 +99,7 @@ class Summary(object):
                                  <th scope="col">#Distinct</th>
                                  </thead>
                                  """)
+                n = len(var.counts)
                 for i in range(5):
                     self.html.append("""
                                      <tr>
@@ -108,12 +109,12 @@ class Summary(object):
                                      <td>{:,d} ({:.1f}%)</td>
                                      <td>{}</td>
                                      </tr>
-                                     """.format(var.counts.index[-i],
-                                                var.counts.ix[-i],
-                                                100.0 * var.counts.ix[-i] / var.length,
-                                                var.counts.index[5-i],
-                                                var.counts.ix[5-i],
-                                                100.0 * var.counts.ix[5-i] / var.length,
+                                     """.format(var.counts.index[i],
+                                                var.counts.iloc[i],
+                                                100.0 * var.counts.iloc[i] / var.length,
+                                                var.counts.index[n-(5-i)],
+                                                var.counts.iloc[n-(5-i)],
+                                                100.0 * var.counts.iloc[n-(5-i)] / var.length,
                                                 "{:,d}".format(var.distinct) if i==0 else ""))
                 self.html.append("</table>")
         elif var.type == "Continuous":
