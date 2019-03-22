@@ -67,11 +67,11 @@ class Summary(object):
                              </tr>
                              </table>
                              """.format(var.counts.index[0],
-                                        var.counts.ix[0],
-                                        100.0 * var.counts.ix[0] / var.length,
+                                        var.counts.iloc[0],
+                                        100.0 * var.counts.iloc[0] / var.length,
                                         var.counts.index[1],
-                                        var.counts.ix[1],
-                                        100.0 * var.counts.ix[1] / var.length))
+                                        var.counts.iloc[1],
+                                        100.0 * var.counts.iloc[1] / var.length))
         elif var.type == "Categorical":
             if var.distinct <= 15:
                 plt.figure(figsize=(14, (var.distinct+1)*0.33))
