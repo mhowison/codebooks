@@ -79,6 +79,7 @@ class Summary(object):
                 sns.despine()
                 svg = StringIO()
                 plt.savefig(svg, format="svg", bbox_inches="tight", pad_inches=0)
+                plt.close()
                 svg.seek(0)
                 self.html.append(svg.getvalue())
             elif var.distinct <= 50:
@@ -88,6 +89,7 @@ class Summary(object):
                 plt.xticks(rotation=90)
                 svg = StringIO()
                 plt.savefig(svg, format="svg", bbox_inches="tight", pad_inches=0)
+                plt.close()
                 svg.seek(0)
                 self.html.append(svg.getvalue())
             else:
@@ -127,6 +129,7 @@ class Summary(object):
             plt.tick_params(length=0, width=0)
             svg = StringIO()
             plt.savefig(svg, format="svg", bbox_inches="tight", pad_inches=0)
+            plt.close()
             svg.seek(0)
             self.html.append("""
                              <div class="row">
