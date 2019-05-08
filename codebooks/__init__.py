@@ -12,8 +12,9 @@ def htmlbook(df, title="Codebook", outfile=None, desc={}):
 
     output = [html.header(title, len(df.columns), len(df))]
 
-    for varname in df.columns:
+    for i, varname in enumerate(df.columns):
         var = Variable(df[varname], desc.get(varname, ""))
+        var.index = i
         output.append(str(html.Summary(var)))
 
     output.append(html.footer)

@@ -27,5 +27,5 @@ setup(
     packages=["codebooks"],
     package_data={"codebooks": ["css/*"]},
     scripts=["scripts/codebooks"],
-    install_requires=["htmlmin", "pandas"]
+    install_requires=["htmlmin", "pandas", "seaborn"]
 )

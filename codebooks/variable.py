@@ -19,7 +19,10 @@ class Variable(object):
 
         # Determine variable type
         if series.is_unique:
-            self.type = "Unique Key"
+            if len(series) == 0:
+                self.type = "Empty"
+            else:
+                self.type = "Unique Key"
             self.distinct = len(series)
         else:
             self.counts = series.value_counts()
@@ -31,7 +34,7 @@ class Variable(object):
             elif series.dtype == "O":
                 self.type = "Categorical"
             else:
-                self.type = "Continuous"
+                self.type = "Numeric"
                 x = self.values
                 n = len(x)
                 self.range = (x[0], x[int(0.25*n)], x[int(0.5*n)], x[int(0.75*n)], x[n-1])
