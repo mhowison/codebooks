@@ -56,7 +56,7 @@ class Summary(object):
             desc = ""
 
         if var.type == "Categorical":
-            span = min(var.distinct, 5)
+            span = min(var.distinct+1, 6)
         elif var.type == "Indicator" or var.type == "Numeric":
             span = 2
         else:
@@ -88,30 +88,38 @@ class Summary(object):
                                         100.0 * var.counts.values[1] / var.length))
         elif var.type == "Categorical":
             if var.distinct <= 5:
+                self.html.append("""<td colspan=3><strong>Values</strong></td>
+                                    <td><strong>Count</strong></td>
+                                    <td><strong>Frequency</strong></td>
+                                    </tr><tr>""")
                 for i, x in zip(var.counts.index[:-1], var.counts.values[:-1]):
                     self.html.append("""
-                                     <td><strong>{}</strong></td><td>{:,d}</td><td><em>{:.1f}%</em></td><td colspan=2></td>
+                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      </tr><tr>
                                      """.format(i, x, 100.0 * x / var.length))
                 for i, x in zip(var.counts.index[-1:], var.counts.values[-1:]):
                     self.html.append("""
-                                     <td><strong>{}</strong></td><td>{:,d}</td><td><em>{:.1f}%</em></td><td colspan=2></td>
+                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      """.format(i, x, 100.0 * x / var.length))
             else:
+                self.html.append("""<td colspan=3><strong>Example Values</strong></td>
+                                    <td><strong>Count</strong></td>
+                                    <td><strong>Frequency</strong></td>
+                                    </tr><tr>""")
                 for i, x in zip(var.counts.index[:2], var.counts.values[:2]):
                     self.html.append("""
-                                     <td><strong>{}</strong></td><td>{:,d}</td><td><em>{:.1f}%</em></td><td colspan=2></td>
+                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      </tr><tr>
                                      """.format(i, x, 100.0 * x / var.length))
-                self.html.append("<td><strong>...</strong></td><td colspan=4></td></tr><tr>")
+                self.html.append("<td colspan=5>...</td></tr><tr>")
                 for i, x in zip(var.counts.index[-2:-1], var.counts.values[-2:-1]):
                     self.html.append("""
-                                     <td><strong>{}</strong></td><td>{:,d}</td><td><em>{:.1f}%</em></td><td colspan=2></td>
+                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      </tr><tr>
                                      """.format(i, x, 100.0 * x / var.length))
                 for i, x in zip(var.counts.index[-1:], var.counts.values[-1:]):
                     self.html.append("""
-                                     <td><strong>{}</strong></td><td>{:,d}</td><td><em>{:.1f}%</em></td><td colspan=2></td>
+                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      """.format(i, x, 100.0 * x / var.length))
         elif var.type == "Numeric":
             self.html.append("""
