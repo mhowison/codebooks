@@ -44,7 +44,7 @@ class Summary(object):
         if missing == 0:
             missing = """<span class="label label-success">NONE</span>"""
         elif missing == 100:
-            missing = """<span class="label label-danger">ALL</span>""".format(missing)
+            missing = """<span class="label label-danger">ALL</span>"""
         elif missing < 5:
             missing = """<span class="label label-warning">{:.2f}%</span>""".format(missing)
         else:
@@ -58,7 +58,7 @@ class Summary(object):
         if var.type == "Categorical":
             span = min(var.distinct+1, 6)
         elif var.type == "Indicator" or var.type == "Numeric":
-            span = 2
+            span = 3
         else:
             span = 1
 
@@ -74,12 +74,16 @@ class Summary(object):
         if var.type == "Unique Key" or var.type == "Empty":
             self.html.append("<td colspan=5></td>")
         elif var.type == "Constant":
-            self.html.append("<td><strong>{}</strong></td><td><em>100%</em></td><td colspan=3></td>".format(var.counts.index[0]))
+            self.html.append("<td colspan=4><strong>{}</strong></td><td><em>100%</em></td>".format(var.counts.index[0]))
         elif var.type == "Indicator":
             self.html.append("""
-                             <td><strong>{}</strong></td><td>{:,d}</td><td><em>{:.1f}%</em></td><td colspan=2></td>
+                             <td colspan=3><strong>Values</strong></td>
+                             <td><strong>Count</strong></td>
+                             <td><strong>Frequency</strong></td>
                              </tr><tr>
-                             <td><strong>{}</strong></td><td>{:,d}</td><td><em>{:.1f}%</em></td><td colspan=2></td>
+                             <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
+                             </tr><tr>
+                             <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                              """.format(yesno(var.counts.index[0]),
                                         var.counts.values[0],
                                         100.0 * var.counts.values[0] / var.length,
