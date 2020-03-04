@@ -25,7 +25,7 @@ def header(title, nvar, nobs):
            <p class="lead"><strong>{2:,d}</strong> variables x <strong>{3:,d}</strong> observations</p>
            <table class="table table-condensed">
            <thead>
-           <th>Index</th><th>Variable</th><th>Type</th><th>Missing</th><th colspan=6>Values</th>
+           <th>Index</th><th>Variable</th><th>Type</th><th>%Missing</th><th colspan=8>#Distinct</th>
            </thead>
            """.format(title, _css, nvar, nobs)
 
@@ -74,18 +74,18 @@ class Summary(object):
                      """.format(span=span, index=var.index, name=var.name, desc=desc, type=var.type, missing=missing, distinct=var.distinct)]
 
         if var.type == "Unique Key" or var.type == "Empty":
-            self.html.append("<td colspan=5></td>")
+            self.html.append("<td colspan=7></td>")
         elif var.type == "Constant":
-            self.html.append("<td colspan=4><strong>{}</strong></td><td><em>100%</em></td>".format(var.counts.index[0]))
+            self.html.append("<td colspan=6><strong>{}</strong></td><td><em>100%</em></td>".format(var.counts.index[0]))
         elif var.type == "Indicator":
             self.html.append("""
-                             <td colspan=3><strong>Values</strong></td>
+                             <td colspan=5><strong>Values</strong></td>
                              <td><strong>Count</strong></td>
                              <td><strong>Frequency</strong></td>
                              </tr><tr>
-                             <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
+                             <td colspan=5>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                              </tr><tr>
-                             <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
+                             <td colspan=5>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                              """.format(yesno(var.counts.index[0]),
                                         var.counts.values[0],
                                         100.0 * var.counts.values[0] / var.length,
@@ -94,38 +94,38 @@ class Summary(object):
                                         100.0 * var.counts.values[1] / var.length))
         elif var.type == "Categorical":
             if var.distinct <= 5:
-                self.html.append("""<td colspan=3><strong>Values</strong></td>
+                self.html.append("""<td colspan=5><strong>Values</strong></td>
                                     <td><strong>Count</strong></td>
                                     <td><strong>Frequency</strong></td>
                                     </tr><tr>""")
                 for i, x in zip(var.counts.index[:-1], var.counts.values[:-1]):
                     self.html.append("""
-                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
+                                     <td colspan=5>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      </tr><tr>
                                      """.format(i, x, 100.0 * x / var.length))
                 for i, x in zip(var.counts.index[-1:], var.counts.values[-1:]):
                     self.html.append("""
-                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
+                                     <td colspan=5>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      """.format(i, x, 100.0 * x / var.length))
             else:
-                self.html.append("""<td colspan=3><strong>Example Values</strong></td>
+                self.html.append("""<td colspan=5><strong>Example Values</strong></td>
                                     <td><strong>Count</strong></td>
                                     <td><strong>Frequency</strong></td>
                                     </tr><tr>""")
                 for i, x in zip(var.counts.index[:2], var.counts.values[:2]):
                     self.html.append("""
-                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
+                                     <td colspan=5>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      </tr><tr>
                                      """.format(i, x, 100.0 * x / var.length))
-                self.html.append("<td colspan=5>...</td></tr><tr>")
+                self.html.append("<td colspan=7>...</td></tr><tr>")
                 for i, x in zip(var.counts.index[-2:-1], var.counts.values[-2:-1]):
                     self.html.append("""
-                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
+                                     <td colspan=5>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      </tr><tr>
                                      """.format(i, x, 100.0 * x / var.length))
                 for i, x in zip(var.counts.index[-1:], var.counts.values[-1:]):
                     self.html.append("""
-                                     <td colspan=3>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
+                                     <td colspan=5>{}</td><td>{:,d}</td><td><em>{:.1f}%</em></td>
                                      """.format(i, x, 100.0 * x / var.length))
         elif var.type == "Numeric":
             self.html.append("""
@@ -134,12 +134,14 @@ class Summary(object):
                              <td><strong>50th</strong></td>
                              <td><strong>75th</strong></td>
                              <td><strong>Max</strong></td>
+                             <td colspan=2></td>
                              </tr><tr>
                              <td>{:.3g}</td>
                              <td>{:.3g}</td>
                              <td>{:.3g}</td>
                              <td>{:.3g}</td>
                              <td>{:.3g}</td>
+                             <td colspan=2></td>
                              """.format(*var.range))
         else:
             raise ValueError("unknown variable type '{}'".format(var.type))
