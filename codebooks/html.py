@@ -57,8 +57,10 @@ class Summary(object):
 
         if var.type == "Categorical":
             span = min(var.distinct+1, 6)
-        elif var.type == "Indicator" or var.type == "Numeric":
+        elif var.type == "Indicator":
             span = 3
+        elif var.type == "Numeric":
+            span = 2
         else:
             span = 1
 
