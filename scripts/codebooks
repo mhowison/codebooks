@@ -27,7 +27,7 @@ if args.desc:
 else:
     desc = {}
 
-df = pd.read_csv(args.dataset, **read_args)
+df = pd.read_csv(args.dataset, low_memory=False, **read_args)
 
 if args.output:
     htmlbook(df, title=title, outfile=args.output, desc=desc)
