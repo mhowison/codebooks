@@ -5,7 +5,7 @@ import pandas as pd
 import sys
 from codebooks import htmlbook
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(prog="codebooks")
 parser.add_argument("dataset")
 parser.add_argument("--sep", "-s")
 parser.add_argument("--output", "-o")
