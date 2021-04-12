@@ -1,18 +1,20 @@
-import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
-def read(filename):
-    return open(os.path.join(os.path.dirname(__file__), filename)).read()
+with open("README.md") as f:
+    long_description = f.read()
+
+with open("codebooks/VERSION") as f:
+    version = f.read().strip()
 
 setup(
     name="codebooks",
-    version="0.0.1",
+    version=version,
     author="Mark Howison",
     author_email="mark@howison.org",
     url="https://github.com/mhowison/codebooks",
     keywords=["data", "data analysis", "data frame", "data science", "codebook"],
     description="Automatic generation of codebooks from dataframes.",
-    long_description=read("README.md"),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     license="BSD",
     classifiers=[
@@ -24,7 +26,12 @@ setup(
         "Topic :: Scientific/Engineering"
     ],
     provides=["codebooks"],
-    packages=["codebooks"],
+    packages=find_packages(),
     package_data={"codebooks": ["css/*"]},
-    install_requires=["htmlmin", "pandas", "seaborn"]
+    install_requires=["htmlmin", "pandas", "seaborn"],
+    entry_points={
+        "console_scripts": [
+            "codebooks = codebooks.__main__:main"
+        ]
+    }
 )

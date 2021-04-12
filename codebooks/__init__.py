@@ -1,12 +1,16 @@
+"""
+codebooks: automatic generation of codebooks from dataframes
+"""
+
 # Re-exported imports
 from codebooks import html
 from codebooks.variable import Variable
 
 # Hidden imports
 from htmlmin import minify as _minify
-from pkg_resources import get_distribution as _get_distribution
+from importlib import resources
 
-__version__ = _get_distribution("codebooks").version
+__version__ = resources.read_text(__name__, "VERSION").strip()
 
 def htmlbook(df, title="Codebook", outfile=None, desc={}):
 
@@ -26,4 +30,3 @@ def htmlbook(df, title="Codebook", outfile=None, desc={}):
             f.write(output)
     else:
         return output
-
