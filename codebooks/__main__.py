@@ -1,20 +1,21 @@
-"""
-codebooks: automatic generation of codebooks from dataframes
-"""
-
 import argparse
+import codebooks
 import os
 import pandas as pd
 import sys
-from codebooks import htmlbook
 
 def main():
 
-    parser = argparse.ArgumentParser(prog="codebooks")
+    parser = argparse.ArgumentParser(description=codebooks.__doc__,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("-v", "--version",
+                        action="version",
+                        version="codebooks {}".format(codebooks.__version__))
     parser.add_argument("dataset")
     parser.add_argument("--sep", "-s")
     parser.add_argument("--output", "-o")
     parser.add_argument("--desc", "-d")
+    parser.add_argument("--na_values", "-?")
     args = parser.parse_args()
 
     if args.dataset == "-":
@@ -32,12 +33,15 @@ def main():
     else:
         desc = {}
 
+    if args.na_values:
+        read_args["na_values"] = args.na_values.split(",")
+
     df = pd.read_csv(args.dataset, low_memory=False, **read_args)
 
     if args.output:
-        htmlbook(df, title=title, outfile=args.output, desc=desc)
+        codebooks.htmlbook(df, title=title, outfile=args.output, desc=desc)
     else:
-        print(htmlbook(df, title=title, desc=desc))
+        print(codebooks.htmlbook(df, title=title, desc=desc))
 
 if __name__ == "__main__":
     sys.exit(main())
