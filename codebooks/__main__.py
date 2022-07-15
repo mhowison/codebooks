@@ -16,6 +16,7 @@ def main():
     parser.add_argument("--output", "-o")
     parser.add_argument("--desc", "-d")
     parser.add_argument("--na_values", "-?")
+    parser.add_argument("--encoding", default="utf8")
     args = parser.parse_args()
 
     if args.dataset == "-":
@@ -36,7 +37,7 @@ def main():
     if args.na_values:
         read_args["na_values"] = args.na_values.split(",")
 
-    df = pd.read_csv(args.dataset, low_memory=False, **read_args)
+    df = pd.read_csv(args.dataset, low_memory=False, encoding=args.encoding, **read_args)
 
     if args.output:
         codebooks.htmlbook(df, title=title, outfile=args.output, desc=desc)
