@@ -31,7 +31,7 @@ class Variable(object):
                 self.type = "Constant"
             elif series.dtype == "bool" or self.distinct == 2:
                 self.type = "Indicator"
-            elif series.dtype == "O":
+            elif series.dtype == "O" or self.distinct <= 10:
                 self.type = "Categorical"
             else:
                 self.type = "Numeric"
