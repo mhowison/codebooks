@@ -28,7 +28,7 @@ setup(
     provides=["codebooks"],
     packages=find_packages(),
     package_data={"codebooks": ["VERSION", "css/*"]},
-    install_requires=["htmlmin", "pandas", "seaborn"],
+    install_requires=["htmlmin", "pandas"],
     entry_points={
         "console_scripts": [
             "codebooks = codebooks.__main__:main"

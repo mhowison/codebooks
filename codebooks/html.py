@@ -1,11 +1,5 @@
-import matplotlib.pyplot as plt
 import os
-import seaborn as sns
 from io import StringIO
-
-sns.set(font="Noto Sans")
-
-color = sns.color_palette("Blues")[-2]
 
 _css = open(os.path.join(os.path.dirname(__file__),
                          "css",
