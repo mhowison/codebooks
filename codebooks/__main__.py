@@ -20,9 +20,10 @@ def main():
     args = parser.parse_args()
 
     if args.dataset == "-":
-        args.dataset = sys.stdin
+        input_file = sys.stdin
         title = "Codebook"
     else:
+        input_file = args.dataset
         title = "Codebook for " + os.path.basename(args.dataset)
 
     read_args = {}
@@ -37,12 +38,15 @@ def main():
     if args.na_values:
         read_args["na_values"] = args.na_values.split(",")
 
-    df = pd.read_csv(args.dataset, low_memory=False, encoding=args.encoding, **read_args)
+    df = pd.read_csv(input_file, low_memory=False, encoding=args.encoding, **read_args)
 
     if args.output:
         codebooks.htmlbook(df, title=title, outfile=args.output, desc=desc)
-    else:
+    elif args.dataset == "-":
         print(codebooks.htmlbook(df, title=title, desc=desc))
+    else:
+        outfile = os.path.splitext(args.dataset)[0] + "_codebook.html"
+        codebooks.htmlbook(df, title=title, outfile=outfile, desc=desc)
 
 if __name__ == "__main__":
     sys.exit(main())
