@@ -21,6 +21,15 @@ The csv file is expected to have two columns (variable name, description).
 
 3-Clause BSD (see LICENSE)
 
+## Tests
+
+The `test/` subdirectory contains a script to generate a synthetic data set, an integration test for the codebooks package, and a benchmark script used to test performance optimizations. You can run these with:
+
+    cd test
+    python dataset.py
+    codebooks dataset.csv
+    python benchmark.py
+
 ## Authors
 
 Mark Howison  

@@ -137,7 +137,7 @@ class SummaryRow(object):
         )]
 
         if self.var.type == "Unique Key" or self.var.type == "Empty":
-            self.html.appned("<td colspan=7></td>")
+            self.html.append("<td colspan=7></td>")
         elif self.var.type == "Constant":
             self.html.append("""
                 <td colspan=6><strong>{}</strong></td>
