@@ -1,21 +1,23 @@
-import pandas as pd
+"""
+Class for representing a variable and inferring its type.
+"""
+
+from numpy import sort
+from pandas import Series
+
 
 class Variable(object):
 
-    def __init__(self, series, desc=""):
+    def __init__(self, series: Series, desc: str = ""):
         """
         """
-        if not isinstance(series, pd.Series):
-            raise ValueError("variable must be a pandas series object")
-
         self.name = series.name
         self.desc = desc
         self.missing = series.isnull()
         self.length = len(series)
 
         series = series[~self.missing]
-        self.values = series.values
-        self.values.sort()
+        self.values = sort(series.values)
 
         # Determine variable type
         if series.is_unique:
@@ -31,11 +33,16 @@ class Variable(object):
                 self.type = "Constant"
             elif series.dtype == "bool" or self.distinct == 2:
                 self.type = "Indicator"
-            elif series.dtype == "O" or self.distinct <= 10:
+            elif series.dtype == "O" or series.dtype == "category" or self.distinct <= 10:
                 self.type = "Categorical"
             else:
                 self.type = "Numeric"
                 x = self.values
                 n = len(x)
-                self.range = (x[0], x[int(0.25*n)], x[int(0.5*n)], x[int(0.75*n)], x[n-1])
-
+                self.range = (
+                    x[0],
+                    x[int(0.25 * n)],
+                    x[int(0.50 * n)],
+                    x[int(0.75 * n)],
+                    x[n - 1]
+                )
