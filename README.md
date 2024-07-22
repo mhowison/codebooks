@@ -15,7 +15,7 @@ You can specify a csv file that maps variable names to descriptions using:
 
     codebooks --desc descriptions.csv -o output.html input.csv
 
-The csv file is expected to have two columns (variable name, description).
+The csv file is expected to have two columns (variable, description).
 
 ## License
 
