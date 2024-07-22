@@ -97,7 +97,7 @@ class SummaryRow(object):
         Set the variable description, if available.
         """
         if self.var.desc:
-            self.desc = "<p>{}</p>".format(var.desc)
+            self.desc = "<p>{}</p>".format(self.var.desc)
         else:
             self.desc = ""
 

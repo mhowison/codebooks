@@ -90,6 +90,7 @@ def main():
             .fillna("")
             .to_dict()
         )
+        desc = desc['description']
     else:
         desc = {}
 
