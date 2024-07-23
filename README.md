@@ -27,7 +27,7 @@ The `test/` subdirectory contains a script to generate a synthetic data set, an 
 
     cd test
     python dataset.py
-    codebooks dataset.csv
+    codebooks --desc desc.csv dataset.csv
     python benchmark.py
 
 ## Authors
