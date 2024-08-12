@@ -5,7 +5,7 @@ N = 1000000
 
 np.random.seed(1230402)
 
-pd.DataFrame(
+data = pd.DataFrame(
 	index=pd.Index(np.arange(N), name="id"),
 	data={
 		"date": np.datetime64("2020-01-01") + np.random.randint(0, 1000, size=N),
@@ -14,4 +14,7 @@ pd.DataFrame(
 		"numerical_categorial": np.random.choice(range(0, 10), size=N),
 		"numerical": np.round(np.random.randn(N), decimals=2)
 	}
-).to_csv("dataset.csv")
+)
+
+data.to_csv("dataset.csv")
+data.to_parquet("dataset.parquet")

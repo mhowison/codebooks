@@ -2,7 +2,7 @@
 Class for representing a variable and inferring its type.
 """
 
-from numpy import sort
+from numpy import datetime_as_string, sort
 from pandas import Series
 
 
@@ -35,6 +35,17 @@ class Variable(object):
                 self.type = "Indicator"
             elif series.dtype == "O" or series.dtype == "category" or self.distinct <= 10:
                 self.type = "Categorical"
+            elif hasattr(series, "dt"):
+                self.type = "Date"
+                x = self.values
+                n = len(x)
+                self.range = (
+                    datetime_as_string(x[0], unit="D"),
+                    datetime_as_string(x[int(0.25 * n)], unit="D"),
+                    datetime_as_string(x[int(0.50 * n)], unit="D"),
+                    datetime_as_string(x[int(0.75 * n)], unit="D"),
+                    datetime_as_string(x[n - 1], unit="D"),
+                )
             else:
                 self.type = "Numeric"
                 x = self.values
@@ -44,5 +55,5 @@ class Variable(object):
                     x[int(0.25 * n)],
                     x[int(0.50 * n)],
                     x[int(0.75 * n)],
-                    x[n - 1]
+                    x[n - 1],
                 )

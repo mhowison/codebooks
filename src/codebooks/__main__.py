@@ -3,7 +3,7 @@ import codebooks
 import codebooks.html
 import os
 import sys
-from pandas import DataFrame, read_csv
+from pandas import DataFrame, read_csv, read_parquet
 
 
 def main():
@@ -27,13 +27,13 @@ def main():
     parser.add_argument(
         "--sep",
         "-s",
-        help="Tabular format separator [defaults to pandas.read_csv]."
+        help="Tabular format separator [uses pandas.read_csv default value]."
     )
     parser.add_argument(
         "--encoding",
         "-e",
         help="""
-            Tabular format file encoding [defaults to pandas.read_csv].
+            Tabular format file encoding [uses pandas.read_csv default value].
         """
     )
     parser.add_argument(
@@ -41,12 +41,13 @@ def main():
         "-?",
         help="""
             Tabular format comma-separated list of strings to convert to NaN
-            [defaults to pandas.read_csv].
+            [uses pandas.read_csv default value].
         """
     )
     parser.add_argument(
         "--parquet",
         "-p",
+        action="store_true",
         help="Use Parquet format instead of tabular."
     )
     parser.add_argument(
@@ -94,7 +95,10 @@ def main():
     else:
         desc = {}
 
-    df: DataFrame = read_csv(input_file, low_memory=False, **read_args)
+    if args.parquet:
+        df: DataFrame = read_parquet(input_file)
+    else:
+        df: DataFrame = read_csv(input_file, low_memory=False, **read_args)
 
     if args.output:
         codebooks.html.generate(

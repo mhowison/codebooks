@@ -37,7 +37,7 @@ _header = """
     <th>Variable</th>
     <th>Type</th>
     <th>%Missing</th>
-    <th colspan=8>#Distinct</th>
+    <th colspan=6>#Distinct</th>
     </thead>
 """
 
@@ -110,7 +110,7 @@ class SummaryRow(object):
             self.span = min(self.var.distinct, self.ncategories) + 1
         elif self.var.type == "Indicator":
             self.span = 3
-        elif self.var.type == "Numeric":
+        elif self.var.type == "Numeric" or self.var.type == "Date":
             self.span = 2
         else:
             self.span = 1
@@ -137,25 +137,25 @@ class SummaryRow(object):
         )]
 
         if self.var.type == "Unique Key" or self.var.type == "Empty":
-            self.html.append("<td colspan=7></td>")
+            self.html.append("<td colspan=5></td>")
         elif self.var.type == "Constant":
             self.html.append("""
-                <td colspan=6><strong>{}</strong></td>
+                <td colspan=4><strong>{}</strong></td>
                 <td><em>100%</em></td>
             """.format(self.var.counts.index[0]))
         elif self.var.type == "Indicator":
             self.html.append("""
-                <td colspan=5><strong>Values</strong></td>
+                <td colspan=3><strong>Values</strong></td>
                 <td><strong>Count</strong></td>
                 <td><strong>Frequency</strong></td>
                 </tr>
                 <tr>
-                <td colspan=5>{}</td>
+                <td colspan=3>{}</td>
                 <td>{:,d}</td>
                 <td><em>{:.1f}%</em></td>
                 </tr>
                 <tr>
-                <td colspan=5>{}</td>
+                <td colspan=3>{}</td>
                 <td>{:,d}</td>
                 <td><em>{:.1f}%</em></td>
             """.format(
@@ -169,7 +169,7 @@ class SummaryRow(object):
         elif self.var.type == "Categorical":
             if self.var.distinct <= self.ncategories:
                 self.html.append("""
-                    <td colspan=5><strong>Values</strong></td>
+                    <td colspan=3><strong>Values</strong></td>
                     <td><strong>Count</strong></td>
                     <td><strong>Frequency</strong></td>
                     </tr>
@@ -177,7 +177,7 @@ class SummaryRow(object):
                 """)
                 for i, x in zip(self.var.counts.index[:-1], self.var.counts.values[:-1]):
                     self.html.append("""
-                        <td colspan=5>{}</td>
+                        <td colspan=3>{}</td>
                         <td>{:,d}</td>
                         <td><em>{:.1f}%</em></td>
                         </tr>
@@ -185,13 +185,13 @@ class SummaryRow(object):
                     """.format(i, x, 100.0 * x / self.var.length))
                 for i, x in zip(self.var.counts.index[-1:], self.var.counts.values[-1:]):
                     self.html.append("""
-                        <td colspan=5>{}</td>
+                        <td colspan=3>{}</td>
                         <td>{:,d}</td>
                         <td><em>{:.1f}%</em></td>
                     """.format(i, x, 100.0 * x / self.var.length))
             else:
                 self.html.append("""
-                    <td colspan=5><strong>Most Frequent Values</strong></td>
+                    <td colspan=3><strong>Most Frequent Values</strong></td>
                     <td><strong>Count</strong></td>
                     <td><strong>Frequency</strong></td>
                     </tr>
@@ -199,7 +199,7 @@ class SummaryRow(object):
                 """)
                 for i, x in zip(self.var.counts.index[:self.ncategories], self.var.counts.values[:self.ncategories]):
                     self.html.append("""
-                        <td colspan=5>{}</td>
+                        <td colspan=3>{}</td>
                         <td>{:,d}</td>
                         <td><em>{:.1f}%</em></td>
                         </tr>
@@ -212,15 +212,28 @@ class SummaryRow(object):
                 <td><strong>50th</strong></td>
                 <td><strong>75th</strong></td>
                 <td><strong>Max</strong></td>
-                <td colspan=2></td>
                 </tr>
                 <tr>
-                <td>{:.3g}</td>
-                <td>{:.3g}</td>
-                <td>{:.3g}</td>
-                <td>{:.3g}</td>
-                <td>{:.3g}</td>
-                <td colspan=2></td>
+                <td>{:.3f}</td>
+                <td>{:.3f}</td>
+                <td>{:.3f}</td>
+                <td>{:.3f}</td>
+                <td>{:.3f}</td>
+            """.format(*self.var.range))
+        elif self.var.type == "Date":
+            self.html.append("""
+                <td><strong>Min</strong></td>
+                <td><strong>25th</strong></td>
+                <td><strong>50th</strong></td>
+                <td><strong>75th</strong></td>
+                <td><strong>Max</strong></td>
+                </tr>
+                <tr>
+                <td>{}</td>
+                <td>{}</td>
+                <td>{}</td>
+                <td>{}</td>
+                <td>{}</td>
             """.format(*self.var.range))
         else:
             raise ValueError("unknown variable type '{}'".format(self.var.type))
