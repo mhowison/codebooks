@@ -9,6 +9,10 @@ Usage:
 
     codebooks -o output.html input.csv
 
+## Example
+
+![Screenshot of codebook for test dataset](https://raw.githubusercontent.com/mhowison/codebooks/dev/doc/screenshot.png)
+
 ## Adding variable descriptions
 
 You can specify a csv file that maps variable names to descriptions using:
