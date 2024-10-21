@@ -2,6 +2,7 @@
 Generator for HTML-formatted codebooks
 """
 
+from codebooks import log
 from codebooks.variable import Variable
 from htmlmin import minify
 from importlib import resources
@@ -261,7 +262,7 @@ def generate(
         nobs=len(df)
     )]
 
-    for i, varname in enumerate(df.columns):
+    for i, varname in enumerate(log.progress(df.columns)):
         var = Variable(
             df[varname],
             desc.get(varname, "")
