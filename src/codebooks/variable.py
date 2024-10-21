@@ -30,6 +30,8 @@ class Variable(object):
                 self.type = "Constant"
             elif series.dtype == "bool" or self.distinct == 2:
                 self.type = "Indicator"
+            elif series.dtype == "category" and series.dtype.ordered == True:
+                self.type = "Ordered Categorical"
             elif series.dtype == "O" or series.dtype == "category" or self.distinct <= 10:
                 self.type = "Categorical"
             elif hasattr(series, "dt"):

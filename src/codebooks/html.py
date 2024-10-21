@@ -107,7 +107,7 @@ class SummaryRow(object):
         Calculate the number of columns and row span from the
         variable type.
         """
-        if self.var.type == "Categorical":
+        if self.var.type == "Categorical" or self.var.type == "Ordered Categorical":
             self.span = min(self.var.distinct, self.ncategories) + 1
         elif self.var.type == "Indicator":
             self.span = 3
@@ -167,7 +167,7 @@ class SummaryRow(object):
                 self.var.counts.values[1],
                 100.0 * self.var.counts.values[1] / self.var.length)
             )
-        elif self.var.type == "Categorical":
+        elif self.var.type == "Categorical" or self.var.type == "Ordered Categorical":
             if self.var.distinct <= self.ncategories:
                 self.html.append("""
                     <td colspan=3><strong>Values</strong></td>
