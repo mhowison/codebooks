@@ -15,10 +15,7 @@ class Variable(object):
         self.desc = desc
         self.missing = series.isnull()
         self.length = len(series)
-
         series = series[~self.missing]
-        self.values = sort(series.values)
-
         # Determine variable type
         if series.is_unique:
             if len(series) == 0:
@@ -37,23 +34,10 @@ class Variable(object):
                 self.type = "Categorical"
             elif hasattr(series, "dt"):
                 self.type = "Date"
-                x = self.values
-                n = len(x)
-                self.range = (
-                    datetime_as_string(x[0], unit="D"),
-                    datetime_as_string(x[int(0.25 * n)], unit="D"),
-                    datetime_as_string(x[int(0.50 * n)], unit="D"),
-                    datetime_as_string(x[int(0.75 * n)], unit="D"),
-                    datetime_as_string(x[n - 1], unit="D"),
-                )
+                self.range = list(map(
+                    lambda x: datetime_as_string(x, unit="D"),
+                    series.quantile([0, 0.25, 0.5, 0.75, 1]).values
+                ))
             else:
                 self.type = "Numeric"
-                x = self.values
-                n = len(x)
-                self.range = (
-                    x[0],
-                    x[int(0.25 * n)],
-                    x[int(0.50 * n)],
-                    x[int(0.75 * n)],
-                    x[n - 1],
-                )
+                self.range = series.quantile([0, 0.25, 0.5, 0.75, 1]).tolist()
