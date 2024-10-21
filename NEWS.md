@@ -1,3 +1,10 @@
+# 0.0.6
+
+* Added progress bar and logging options.
+* Added screenshot.
+* Added Ordered Categorical type and corresponding test.
+* Removed unneeded variable sort.
+
 # 0.0.5
 
 * Fixed --parquet option and added corresponding test.
