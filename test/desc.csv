@@ -3,5 +3,7 @@ id,An identifier
 date,Thd date in YYYY-MM-DD format
 bool,An example of a boolean variable
 categorical,An example of a categorical variable
-numerical_categorial,An example of a numerical/categorical variable
+pandas_categorical,An example of a pandas 'Categorical' type
+numerical_categorical,An example of a numerical/categorical variable
+ordered_categorical,An example of an ordered pandas 'Categorical' type
 numerical,An example of a numerical variable

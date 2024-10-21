@@ -3,6 +3,7 @@ import codebooks
 import codebooks.html
 import os
 import sys
+from codebooks import log
 from pandas import DataFrame, read_csv, read_parquet
 
 
@@ -16,6 +17,16 @@ def main():
         "-v", "--version",
         action="version",
         version="codebooks {}".format(codebooks.__version__)
+    )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="suppress progress bars and info messages",
+    )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="show all logging messages, including debugging output",
     )
     parser.add_argument(
         "dataset",
@@ -69,6 +80,13 @@ def main():
 
     args = parser.parse_args()
 
+    if args.debug:
+        log.setLevel(log.DEBUG)
+    elif args.quiet:
+        log.setLevel(log.ERROR)
+    else:
+        log.setLevel(log.INFO)
+
     if args.dataset == "-":
         input_file = sys.stdin
         title = "Codebook"
@@ -95,11 +113,13 @@ def main():
     else:
         desc = {}
 
+    log.info("reading input file")
     if args.parquet:
         df: DataFrame = read_parquet(input_file)
     else:
         df: DataFrame = read_csv(input_file, low_memory=False, **read_args)
 
+    log.info("generating codebook")
     if args.output:
         codebooks.html.generate(
             df,
