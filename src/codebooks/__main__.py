@@ -5,6 +5,7 @@ import os
 import sys
 from codebooks import log
 from pandas import DataFrame, read_csv, read_parquet, read_stata
+from pandas.io.stata import StataReader
 
 
 def main():
@@ -123,6 +124,9 @@ def main():
         df: DataFrame = read_parquet(input_file)
     elif args.stata:
         df: DataFrame = read_stata(input_file)
+        if not desc:
+            desc = StataReader(input_file).variable_labels()
+            log.info("automatically using Stata variable labels as descriptions")
     else:
         df: DataFrame = read_csv(input_file, low_memory=False, **read_args)
 
