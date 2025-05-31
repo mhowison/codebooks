@@ -4,7 +4,7 @@ import codebooks.html
 import os
 import sys
 from codebooks import log
-from pandas import DataFrame, read_csv, read_parquet
+from pandas import DataFrame, read_csv, read_parquet, read_stata
 
 
 def main():
@@ -62,6 +62,11 @@ def main():
         help="Use Parquet format instead of tabular."
     )
     parser.add_argument(
+        "--stata",
+        action="store_true",
+        help="Use Stata (.dta) format instead of tabular."
+    )
+    parser.add_argument(
         "--desc",
         "-d",
         help="""
@@ -116,6 +121,8 @@ def main():
     log.info("reading input file")
     if args.parquet:
         df: DataFrame = read_parquet(input_file)
+    elif args.stata:
+        df: DataFrame = read_stata(input_file)
     else:
         df: DataFrame = read_csv(input_file, low_memory=False, **read_args)
 
