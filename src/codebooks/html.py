@@ -275,7 +275,7 @@ def generate(
     output = minify("".join(output), remove_empty_space=True)
 
     if outfile is not None:
-        with open(outfile, "w") as f:
+        with open(outfile, "w", encoding="utf8") as f:
             f.write(output)
     else:
         return output
