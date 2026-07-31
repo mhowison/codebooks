@@ -1,3 +1,9 @@
+# 0.0.7
+
+* Removed dependency on htmlmin.
+* Fixed HTML validation errors.
+* Fixed detection of numerical variables.
+
 # 0.0.6
 
 * Added progress bar and logging options.

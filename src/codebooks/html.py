@@ -2,9 +2,9 @@
 Generator for HTML-formatted codebooks
 """
 
+import re
 from codebooks import log
 from codebooks.variable import Variable
-from htmlmin import minify
 from importlib import resources
 from pandas import DataFrame
 from typing import Dict
@@ -24,7 +24,7 @@ _header = """
     <head>
     <title>{title}</title>
     <style>{css}</style>
-    <head>
+    </head>
     <body>
     <div class="container-fluid">
     <h1>{title}</h1>
@@ -34,11 +34,13 @@ _header = """
     </p>
     <table class="table table-condensed">
     <thead>
+    <tr>
     <th>Index</th>
     <th>Variable</th>
     <th>Type</th>
     <th>%Missing</th>
     <th colspan=6>#Distinct</th>
+    </tr>
     </thead>
 """
 
@@ -272,10 +274,15 @@ def generate(
 
     output.append(_footer)
 
-    output = minify("".join(output), remove_empty_space=True)
+    output = (re
+        .sub(r"\s+", " ", "".join(output))
+        .strip()
+        .replace(", ", ",")
+        .replace("> <", "><")
+    )
 
     if outfile is not None:
-        with open(outfile, "w") as f:
+        with open(outfile, "w", encoding="utf8") as f:
             f.write(output)
     else:
         return output
