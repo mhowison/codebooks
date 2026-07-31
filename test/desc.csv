@@ -1,6 +1,6 @@
 variable,description
 id,An identifier
-date,Thd date in YYYY-MM-DD format
+date,The date in YYYY-MM-DD format
 bool,An example of a boolean variable
 categorical,An example of a categorical variable
 pandas_categorical,An example of a pandas 'Categorical' type

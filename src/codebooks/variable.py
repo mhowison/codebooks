@@ -40,6 +40,8 @@ class Variable(object):
                     lambda x: datetime_as_string(x, unit="D"),
                     series.quantile([0, 0.25, 0.5, 0.75, 1]).values
                 ))
-            else:
+            elif str(series.dtype).startswith("float") or str(series.dtype).startswith("int"):
                 self.type = "Numeric"
                 self.range = series.quantile([0, 0.25, 0.5, 0.75, 1]).tolist()
+            else:
+                self.type = "Categorical"
